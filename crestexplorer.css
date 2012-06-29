@@ -17,10 +17,15 @@ ul
 
 #wrapper
 {
-    margin-left:2em;
-    margin-right:2em;
+    margin:2em;
     padding-right:2em;
     display:inline-block;
+}
+
+#autorefresh
+{
+    float:right;
+    padding-bottom: 0.5em;
 }
 
 .name

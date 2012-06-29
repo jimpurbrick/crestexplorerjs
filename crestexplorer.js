@@ -113,16 +113,24 @@
     }
 
     function render(path) {
-        $("#wrapper").contents().remove();
         $.getJSON(path, function(data, status, xhr) {
-            $('#wrapper').append(buildElement(data));
+            $("#data").children().replaceWith(buildElement(data));
             bind();
         });
     }
 
-    window.onhashchange = function() {
+    function refresh() {
         render(window.location.hash.substring(1));
-    };
+    }
+
+    var intervalId = undefined;
+    function onClickAutoRefresh(evt) {
+        if($(evt.target).attr("checked")) {
+            intervalId = setInterval(refresh, 10 * 1000);
+        } else {
+            clearInterval(intervalId)
+        }
+    }
 
     $(document).ready(function() {
         $.ajaxSetup({
@@ -134,7 +142,12 @@
                 "Accept": "application/json, charset=utf-8"
             }
         });
-        render(window.location.hash.substring(1));
+        $("#autorefresh > input").click(onClickAutoRefresh);
+        refresh();
     });
+
+    window.onhashchange = function() {
+        refresh();
+    };
 
 }()); // End crestexplorerjs

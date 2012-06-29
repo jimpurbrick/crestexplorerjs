@@ -18,14 +18,16 @@ ul
 #wrapper
 {
     margin:2em;
+    padding-top:1em;
     padding-right:2em;
+    padding-left:2em;
     display:inline-block;
 }
 
 #autorefresh
 {
     float:right;
-    padding-bottom: 0.5em;
+    padding:0.5em;
 }
 
 .name

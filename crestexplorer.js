@@ -140,6 +140,9 @@
             dataType: "json",
             headers: {
                 "Accept": "application/json, charset=utf-8"
+            },
+            error: function (xhr, status, error) {
+                $("#data").children().replaceWith("<span>Error: " + error + "</span>");
             }
         });
         $("#autorefresh > input").click(onClickAutoRefresh);

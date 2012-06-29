@@ -1,0 +1,29 @@
+body
+{
+    font: 1em "Trebuchet MS",sans-serif;
+    background: black url(http://community.eveonline.com/bitmaps/interface/community/bg.jpg);
+    color: white;
+}
+
+td
+{
+    padding-right:2em;
+}
+
+ul
+{
+    list-style-type: disc;
+}
+
+#wrapper
+{
+    margin-left:2em;
+    margin-right:2em;
+    padding-right:2em;
+    display:inline-block;
+}
+
+.name
+{
+    padding-right: 0.5em;
+}

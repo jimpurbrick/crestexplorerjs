@@ -22,7 +22,7 @@
     "use strict";
 
     // force cross-site scripting (needed for IE9 CORS support with jQuery 1.5)
-    //jQuery.support.cors = true;
+    jQuery.support.cors = true;
     
     function bind() {
         $("a").click(function(evt) {

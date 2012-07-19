@@ -3,17 +3,19 @@
 <head>
     <title="crestexplorerjs">
     <meta charset="utf-8"/>
-    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/themes/ui-darkness/jquery-ui.css"/>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/themes/ui-darkness/jquery-ui.css"/>
     <link rel="stylesheet" href="crestexplorer.css"/>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
-    <script src="https://raw.github.com/tlianza/ajaxHooks/master/src/ajax/xdr.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+    <script src="http://cachedcommons.org/cache/jquery-cookie/0.0.0/javascripts/jquery-cookie-min.js"></script>
+    <script src="xdr-min.js"></script>
     <script src="crestexplorer.js"></script>
 </head>
 <body>
     <div id="wrapper" class="ui-widget-content ui-corner-all">
         <div id="data"><span></span></div>
-        <span id="autorefresh">auto refresh <input type="checkbox" /></span>
+        <span class="bottom-menu" id="autorefresh">auto refresh <input type="checkbox" /></span>
+        <a class="bottom-menu" id="login">login</a>
     </div>
 </body>
 </html>

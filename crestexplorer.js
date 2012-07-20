@@ -30,7 +30,7 @@
 
     // Bind click handlers to link elements.
     function bindLinks() {
-        $("a").click(function(evt) {
+        $(".link").click(function(evt) {
             evt.preventDefault();
             window.location.hash = $(this).attr('href');
             return false;
@@ -78,7 +78,8 @@
     function buildLink(data, name) {
         var link = $(document.createElement('a'))
             .attr('href', data.href)
-            .addClass('name');
+            .addClass('name')
+            .addClass('link');
         if(data.name !== undefined) {
             $(link).append(data.name);
         } else if(name !== undefined && name !== "href") {
@@ -200,8 +201,9 @@
         }
     }
 
-    // Send Oauth token request on login, reset agax Authorization header on logout.
+    // Send Oauth token request on login, reset ajax Authorization header on logout.
     function onClickLogin(evt) {
+        evt.preventDefault();
         var command = $("#login").text();
         if (command === "login") {
 
@@ -222,7 +224,6 @@
             ajaxSetup(false);
             loginSetup(false);
         }
-        evt.preventDefault();
     }
 
     // Extract value from oauth formatted hash fragment.

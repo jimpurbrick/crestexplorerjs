@@ -1,6 +1,6 @@
 /*!
  * crestexplorerjs
- * https://github.com/somerepo/
+ * https://github.com/jimpurbrick/crestexplorerjs
  *
  * Copyright 2012, CCP (http://www.ccpgames.com)
  * Dual licensed under the MIT or GPL Version 2 licenses.

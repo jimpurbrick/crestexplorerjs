@@ -22,8 +22,8 @@
     "use strict";
 
     // Configuration parameters
-    var redirectUri = "http://10.1.4.51:8888/index.html";
-    var clientId = "localcrestexplorerjs"; // OAuth client id
+    var redirectUri = "http://jimpurbrick.github.com/crestexplorerjs/";
+    var clientId = "crestexplorerjs"; // OAuth client id
     var csrfTokenName = clientId + "csrftoken";
     var hashTokenName = clientId + "hash";
     var scopes = "capsuleerRead personalContactsRead corporationContactsRead";

@@ -27,23 +27,27 @@
     var csrfTokenName = clientId + "csrftoken";
     var hashTokenName = clientId + "hash";
     var scopes = "capsuleerRead personalContactsRead corporationContactsRead";
-    
-    function bind() {
+
+    // Bind click handlers to link elements.
+    function bindLinks() {
         $("a").click(function(evt) {
             evt.preventDefault();
             window.location.hash = $(this).attr('href');
             return false;
         });
     }
-    
+
+    // True if value is an object.
     function isObject(value) {
-        return typeof(value) === 'object';
+        return value && typeof(value) === 'object';
     }
 
+    // True if value is an array.
     function isArray(value) {
-        return Object.prototype.toString.apply(value) === '[object Array]';
+        return value && Object.prototype.toString.apply(value) === '[object Array]';
     }
 
+    // True if value is an object containing only href and primitive properties.
     function isLink(value) {
         var prop;
         if (! isObject(value)) {
@@ -65,32 +69,35 @@
         return true;
     }
 
+    // Build text node from data.
     function buildElementFromPrimitive(data) {
         return String(data);
     }
-    
-    function buildElementFromLink(data, name) {
+
+    // Build link from data.
+    function buildLink(data, name) {
         var link = $(document.createElement('a'))
             .attr('href', data.href)
             .addClass('name');
         if(data.name !== undefined) {
             $(link).append(data.name);
-        } else if(name !== undefined) {
+        } else if(name !== undefined && name !== "href") {
             $(link).append(name);
         } else {
-            $(link).append(data.href);
+            $(link).append(link[0].pathname);
         }
         return $(link);
     }
 
-    function buildElementFromArray(data) {
-        var i, list = document.createElement('ul');
+    // Build ordered list from array.
+    function buildListFromArray(data) {
+        var i, list = document.createElement('ol');
         for(i = 0; i < data.length; i++) {
             if(isLink(data[i])) {
                 $(list).prepend(
                 $(document.createElement('li'))
                     .addClass('arrayItem')
-                    .append(buildElementFromLink(data[i])));
+                    .append(buildLink(data[i])));
             } else {
                 $(list).prepend(
                 $(document.createElement('li'))
@@ -101,45 +108,72 @@
         return $(list);
     }
 
-    function buildElementFromObject(data) {
-        var prop, list = document.createElement('ul');
+    // Build list item.
+    function buildListItem() {
+        return $(document.createElement('li')).addClass('dictionaryItem');
+    }
 
-        if (data.href !== undefined) {
-            $(list).prepend(
-                $(document.createElement('li'))
-                    .addClass('dictionaryItem')
-                    .append(buildElementFromLink(data, data.name)));
-        }
+    // Build span containing name with name class.
+    function buildListName(name) {
+        return $(document.createElement('span')).addClass('name').append(name);
+    }
+
+    // Build unordered list from object.
+    function buildListFromObject(data) {
+        var prop, item, list = document.createElement('ul');
+
+        // Loop over object properties.
         for (prop in data) {
-            if (data.hasOwnProperty(prop)) {
-                $(list).prepend(
-                    $(document.createElement('li'))
-                        .addClass('dictionaryItem')
-                    .append($(document.createElement('span'))
-                        .addClass('name')
-                        .append(prop))
-                    .append($(document.createElement('span'))
-                        .addClass('value')
-                        .append(buildElement(data[prop]))));
+
+            // Exclude "self" links and names if used in self links.
+            if (data.hasOwnProperty(prop) && prop !== "href" && (prop !== "name" || data.href === undefined)) {
+                item = buildListItem();
+
+                if (isLink(data[prop])) {
+
+                    // Link has name, so use property name as label, otherwise use property name as link text.
+                    if(data[prop].name) {
+                        item.append(buildListName(prop));
+                    }
+                    item.append(buildLink(data[prop], prop));
+
+                } else {
+
+                    // Recurse over child data.
+                    item.append(buildListName(prop))
+                        .append($(document.createElement('span'))
+                             .addClass('value')
+                             .append(buildElement(data[prop])));
+                }
             }
+            $(list).prepend(item);
         }
+
+        // Add "self" link to top of list.
+        if(data.href) {
+            $(list).prepend(buildListItem().append(buildLink(data, undefined)));
+        }
+
         return $(list);
     }
 
+    // Determine data type and build appropriate element.
     function buildElement(data) {
         if(isArray(data)) {
-            return buildElementFromArray(data);
+            return buildListFromArray(data);
         }
         if(isObject(data)) {
-            return buildElementFromObject(data);
+            return buildListFromObject(data);
         }
         return buildElementFromPrimitive(data);
     }
 
+    // Show error message in main data pane.
     function displayError(error) {
         $("#data").children().replaceWith("<span>" + error + "</span>");
     }
 
+    // Request uri and render as HTML.
     function render(uri) {
         if (uri.indexOf("http") !== 0) {
             displayError("Addresses must be absolute");
@@ -147,14 +181,16 @@
         }
         $.getJSON(uri, function(data, status, xhr) {
             $("#data").children().replaceWith(buildElement(data));
-            bind();
+            bindLinks();
         });
     }
 
+    // Re-request and render data.
     function refresh() {
         render(window.location.hash.substring(1));
     }
 
+    // Toggle refresh timer.
     var intervalId = undefined;
     function onClickAutoRefresh(evt) {
         if($(evt.target).attr("checked")) {
@@ -164,6 +200,7 @@
         }
     }
 
+    // Send Oauth token request on login, reset agax Authorization header on logout.
     function onClickLogin(evt) {
         var command = $("#login").text();
         if (command === "login") {
@@ -253,6 +290,7 @@
         refresh();
     });
 
+    // Request new URI on hash change.
     window.onhashchange = function() {
         refresh();
     };

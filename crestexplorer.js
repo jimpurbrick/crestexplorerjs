@@ -22,11 +22,11 @@
     "use strict";
 
     // Configuration parameters
-    var redirectUri = "http://jimpurbrick.github.com/crestexplorerjs/";
-    var clientId = "crestexplorerjs"; // OAuth client id
+    var redirectUri = "http://jimpurbrick.com/crestexplorerjs/";
+    var clientId = "c8cc66f9e3a9488993f553264fc5f428"; // OAuth client id
     var csrfTokenName = clientId + "csrftoken";
     var hashTokenName = clientId + "hash";
-    var scopes = "capsuleerRead personalContactsRead corporationContactsRead";
+    var scopes = "publicData";
 
     // Bind click handlers to link elements.
     function bindLinks() {

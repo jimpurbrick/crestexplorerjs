@@ -186,21 +186,6 @@
         });
     }
 
-    // Re-request and render data.
-    function refresh() {
-        render(window.location.hash.substring(1));
-    }
-
-    // Toggle refresh timer.
-    var intervalId = undefined;
-    function onClickAutoRefresh(evt) {
-        if($(evt.target).attr("checked")) {
-            intervalId = setInterval(refresh, 10 * 1000);
-        } else {
-            clearInterval(intervalId)
-        }
-    }
-
     // Send Oauth token request on login, reset ajax Authorization header on logout.
     function onClickLogin(evt) {
         evt.preventDefault();
@@ -286,14 +271,12 @@
 
         ajaxSetup(token);
         loginSetup(token);
-
-        $("#autorefresh > input").click(onClickAutoRefresh);
-        refresh();
+	render(window.location.hash.substring(1));
     });
 
     // Request new URI on hash change.
     window.onhashchange = function() {
-        refresh();
+	render(window.location.hash.substring(1));
     };
 
 }($, window, document)); // End crestexplorerjs

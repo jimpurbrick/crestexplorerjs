@@ -127,7 +127,9 @@
         for (prop in data) {
 
             // Exclude "self" links and names if used in self links.
-            if (data.hasOwnProperty(prop) && prop !== "href" && (prop !== "name" || data.href === undefined)) {
+            if (data.hasOwnProperty(prop) && prop !== "href" 
+		&& (prop !== "name" || data.href === undefined)
+		&& (!prop.match(/_str$/))) { // TODO: Remove redundant *_str elements from representations.
                 item = buildListItem();
 
                 if (isLink(data[prop])) {

@@ -1,7 +1,8 @@
 body
 {
     font: 1em "Trebuchet MS",sans-serif;
-    background: black url(https://community.eveonline.com/bitmaps/interface/community/bg.jpg);
+    background: black url(https://community.eveonline.com/bitmaps/interface/community/bg.jpg) top right no-repeat;
+    background-attachment: fixed;
     color: white;
 }
 

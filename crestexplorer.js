@@ -200,7 +200,7 @@
             $.cookie(hashTokenName, window.location.hash);
 
             // No OAuth token, request one from the OAuth authentication endpoint
-            window.location =  "https://sisilogin.testeveonline.com/oauth/authorize/" +
+            window.location =  "https://login.eveonline.com/oauth/authorize/" +
                 "?response_type=token" +
                 "&client_id=" + clientId +
                 "&scope=" + scopes +

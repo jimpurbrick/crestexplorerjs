@@ -23,7 +23,7 @@
 
     // Configuration parameters
     var redirectUri = "http://jimpurbrick.com/crestexplorerjs/";
-    var clientId = "28063285b7ab4bc49f3615bf9fc35b3b"; // OAuth client id
+    var clientId = "c8cc66f9e3a9488993f553264fc5f428"; // OAuth client id
     var csrfTokenName = clientId + "csrftoken";
     var hashTokenName = clientId + "hash";
     var scopes = "publicData";

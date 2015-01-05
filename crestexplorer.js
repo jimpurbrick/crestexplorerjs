@@ -11,7 +11,7 @@
 /*
  * An example read-only JavaScript CREST API explorer application which relies only on API conventions
  * for link structure and so uses generic "application/json" Accept and Content-Type headers. Applications written
- * in this way should never rely on the structure of specific representations as they made change.
+ * in this way should never rely on the structure of specific representations as they may change.
  */
 
 /*jslint undef: true, browser: true, vars: true, white: true, forin: true, plusplus: true, bitwise: true, eqeq: true, maxerr: 50, indent: 4 */

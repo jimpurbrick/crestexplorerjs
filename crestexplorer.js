@@ -26,7 +26,7 @@
     var clientId = "c8cc66f9e3a9488993f553264fc5f428"; // OAuth client id
     var csrfTokenName = clientId + "csrftoken";
     var hashTokenName = clientId + "hash";
-    var scopes = "publicData";
+    var scopes = "publicData characterLocationRead characterFittingsRead characterContactsRead";
 
     // Bind click handlers to link elements.
     function bindLinks() {

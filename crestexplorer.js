@@ -188,13 +188,18 @@
 		"dataType": "text"
 	}).success(function(optionsData, optionsStatus, optionsXhr) {
 		$.getJSON(uri, function(data, status, xhr) {
-			var contentType, representationName, schema;
+			var contentType, representationName, schema, dataUri, fileName;
 			$("#data").children().replaceWith(buildElement(data));
 			contentType = xhr.getResponseHeader("Content-Type");
 			representationName = contentType.replace("; charset=utf-8", ""); // HACK(jimp): proper parsing.
 			$("#representationName").text(representationName);
 			schema = crestschema.jsonSchemaFromCrestOptions(optionsData);
-			$("#schema").val(JSON.stringify(schema.GET[representationName], null, 4));
+			dataUri = "data:application/json;charset=utf-8," +
+			    encodeURIComponent(JSON.stringify(schema.GET[representationName], null, 4));
+			fileName = representationName.
+			    replace('application/vnd.ccp.eve.','').
+			    replace('+', '.');
+			$("#schema").attr("href", dataUri).attr("download", fileName);
 			bindLinks();
 		});
 	});

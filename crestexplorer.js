@@ -23,6 +23,7 @@
 
     // Configuration parameters
     var redirectUri = "http://jimpurbrick.com/crestexplorerjs/";
+    var authorizationEndpoint = "https://login.eveonline.com/oauth/authorize/"; // TODO(jimp): determine auth endpoint based on initial URI.
     var clientId = "c8cc66f9e3a9488993f553264fc5f428"; // OAuth client id
     var csrfTokenName = clientId + "csrftoken";
     var hashTokenName = clientId + "hash";
@@ -127,8 +128,8 @@
         for (prop in data) {
 
             // Exclude "self" links and names if used in self links.
-            if (data.hasOwnProperty(prop) && 
-		prop !== "href" && 
+            if (data.hasOwnProperty(prop) &&
+		prop !== "href" &&
 		(prop !== "name" || data.href === undefined) &&
 		(!prop.match(/_str$/))) { // TODO: Remove redundant *_str elements from representations.
                 item = buildListItem();
@@ -205,31 +206,6 @@
 	});
     }
 
-    // Send Oauth token request on login, reset ajax Authorization header on logout.
-    function onClickLogin(evt) {
-        evt.preventDefault();
-        var command = $("#login").text();
-        if (command === "login") {
-
-            // Store CSRF token and current location as cookie
-            var csrfToken = uuidGen();
-            $.cookie(csrfTokenName, csrfToken);
-            $.cookie(hashTokenName, window.location.hash);
-
-            // No OAuth token, request one from the OAuth authentication endpoint
-            window.location =  "https://login.eveonline.com/oauth/authorize/" +
-                "?response_type=token" +
-                "&client_id=" + clientId +
-                "&scope=" + scopes +
-                "&redirect_uri=" + redirectUri +
-                "&state=" + csrfToken;
-
-        } else {
-            ajaxSetup(false);
-            loginSetup(false);
-        }
-    }
-
     // Extract value from oauth formatted hash fragment.
     function extractFromHash(name, hash) {
         var match = hash.match(new RegExp(name + "=([^&]+)"));
@@ -263,10 +239,6 @@
         });
     }
 
-    function loginSetup(token) {
-        $("#login").text(token? "logout":"login").click(onClickLogin);
-    }
-
     $(document).ready(function() {
 
         var hash = window.location.hash;
@@ -286,10 +258,23 @@
             // Delete cookies.
             $.cookie(csrfTokenName, null);
             $.cookie(hashTokenName, null);
-        }
+
+        } else {
+
+	    // Store CSRF token as cookie
+	    var csrfToken = uuidGen();
+            $.cookie(csrfTokenName, csrfToken);
+
+            // No OAuth token, request one from the OAuth authentication endpoint
+            window.location = authorizationEndpoint +
+                "?response_type=token" +
+                "&client_id=" + clientId +
+                "&scope=" + scopes +
+                "&redirect_uri=" + redirectUri +
+                "&state=" + csrfToken;
+	}
 
         ajaxSetup(token);
-        loginSetup(token);
 	render(window.location.hash.substring(1));
     });
 

@@ -261,9 +261,10 @@
 
         } else {
 
-	    // Store CSRF token as cookie
+	    // Store CSRF token and current hash as cookie
 	    var csrfToken = uuidGen();
             $.cookie(csrfTokenName, csrfToken);
+	    $.cookie(hashTokenName, window.location.hash);
 
             // No OAuth token, request one from the OAuth authentication endpoint
             window.location = authorizationEndpoint +

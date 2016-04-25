@@ -176,9 +176,8 @@
 
     // Show error message in main data pane.
     function displayError(error) {
-	$("#representationName").hide();
-        $("#data").replaceWith("<span>" + error + "</span>");
-	$("#schema").hide();
+	$("#content").hide();
+	$("#error").text(error).show();
     }
 
     // Request uri and render as HTML.
@@ -196,15 +195,17 @@
 			$("#data").children().replaceWith(buildElement(data));
 			contentType = xhr.getResponseHeader("Content-Type");
 			representationName = contentType.replace("; charset=utf-8", ""); // HACK(jimp): proper parsing.
-			$("#representationName").text(representationName).show();
+			$("#representationName").text(representationName);
 			schema = crestschema.jsonSchemaFromCrestOptions(optionsData);
 			dataUri = "data:application/json;charset=utf-8," +
 			    encodeURIComponent(JSON.stringify(schema.GET[representationName], null, 4));
 			fileName = representationName.
 			    replace('application/vnd.ccp.eve.','').
 			    replace('+', '.');
-			$("#schema").attr("href", dataUri).attr("download", fileName).show();
+			$("#schema").attr("href", dataUri).attr("download", fileName);
 			bindLinks();
+			$("#error").hide();
+			$("#content").show();
 		});
 	});
     }

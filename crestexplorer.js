@@ -94,6 +94,7 @@
     // Build ordered list from array.
     function buildListFromArray(data) {
         var i, list = document.createElement('ol');
+	$(list).attr('start', '0');
         for(i = 0; i < data.length; i++) {
             if(isLink(data[i])) {
                 $(list).prepend(

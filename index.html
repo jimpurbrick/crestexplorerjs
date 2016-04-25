@@ -1,20 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title="crestexplorerjs">
-    <meta charset="utf-8"/>
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/themes/ui-darkness/jquery-ui.css"/>
-    <link rel="stylesheet" href="crestexplorer.css"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
-    <script src="xdr-min.js"></script>
-    <script src="crestexplorer.js"></script>
+  <title="crestexplorerjs"/>
+  <meta charset="utf-8"/>
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/themes/ui-darkness/jquery-ui.css"/>
+  <link rel="stylesheet" href="crestexplorer.css"/>
+  <script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+  <script src="https://rawgit.com/jimpurbrick/crestschema/master/crestschema.js"></script>
+  <script src="xdr-min.js"></script>
+  <script src="crestexplorer.js"></script>
 </head>
 <body>
-    <div id="wrapper" class="ui-widget-content ui-corner-all">
-        <div id="data"><span></span></div>
-        <a class="bottom-menu" href="#" id="login">login</a>
+  <div id="wrapper" class="ui-widget-content ui-corner-all">
+    <div id="content">
+      <div id="representationName"></div>
+      <div id="data"><span></span></div>
+      <div>Schema</div>
+      <div><textarea id="schema" rows="80" cols="80"></textarea></div>
+      <a class="bottom-menu" href="#" id="login">login</a>
     </div>
+  </div>
 </body>
 </html>

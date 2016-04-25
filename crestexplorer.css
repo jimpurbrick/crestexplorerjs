@@ -1,7 +1,7 @@
 body
 {
     font: 1em "Trebuchet MS",sans-serif;
-    background: black url(https://community.eveonline.com/bitmaps/interface/community/bg.jpg) top right no-repeat;
+    background: black url(https://login.eveonline.com/Images/site-bg.jpg) top right no-repeat;
     background-attachment: fixed;
     color: white;
 }
@@ -22,6 +22,7 @@ ul
     padding-top:1em;
     padding-right:2em;
     padding-left:2em;
+    padding-bottom:1em;
     display:inline-block;
 }
 

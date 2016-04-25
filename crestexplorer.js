@@ -127,7 +127,7 @@
         for (prop in data) {
 
             // Exclude "self" links and names if used in self links.
-            if (data.hasOwnProperty(prop) && prop !== "href" 
+            if (data.hasOwnProperty(prop) && prop !== "href"
 		&& (prop !== "name" || data.href === undefined)
 		&& (!prop.match(/_str$/))) { // TODO: Remove redundant *_str elements from representations.
                 item = buildListItem();
@@ -173,7 +173,7 @@
 
     // Show error message in main data pane.
     function displayError(error) {
-        $("#data").children().replaceWith("<span>" + error + "</span>");
+        $("#content").replaceWith("<span>" + error + "</span>");
     }
 
     // Request uri and render as HTML.
@@ -182,10 +182,21 @@
             displayError("Addresses must be absolute");
             return;
         }
-        $.getJSON(uri, function(data, status, xhr) {
-            $("#data").children().replaceWith(buildElement(data));
-            bindLinks();
-        });
+	$.ajax(uri, {
+		"method": "OPTIONS",
+		"dataType": "text"
+	}).success(function(optionsData, optionsStatus, optionsXhr) {
+		$.getJSON(uri, function(data, status, xhr) {
+			var contentType, representationName, schema;
+			$("#data").children().replaceWith(buildElement(data));
+			contentType = xhr.getResponseHeader("Content-Type");
+			representationName = contentType.replace("; charset=utf-8", ""); // HACK(jimp): proper parsing.
+			$("#representationName").text(representationName);
+			schema = crestschema.jsonSchemaFromCrestOptions(optionsData);
+			$("#schema").val(JSON.stringify(schema.GET[representationName], null, 4));
+			bindLinks();
+		})
+	});
     }
 
     // Send Oauth token request on login, reset ajax Authorization header on logout.

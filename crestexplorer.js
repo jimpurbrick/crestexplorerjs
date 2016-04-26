@@ -139,8 +139,8 @@
 
             // Exclude "self" links and names if used in self links.
             if (data.hasOwnProperty(prop) &&
-		prop !== "href" &&
-		(prop !== "name" || data.href === undefined) &&
+		// prop !== "href" &&
+		// (prop !== "name" || data.href === undefined) &&
 		(!prop.match(/_str$/))) { // TODO: Remove redundant *_str elements from representations.
                 item = buildListItem();
 		description = schema.properties[prop].description;
@@ -175,6 +175,9 @@
 
     // Determine data type and build appropriate element.
     function buildElement(data, schema) {
+	if(isLink(data)) {
+	    return buildLink(data);
+	}
         if(isArray(data)) {
             return buildListFromArray(data, schema);
         }

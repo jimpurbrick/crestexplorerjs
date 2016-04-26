@@ -121,11 +121,11 @@
 
     // Build span containing name with name class.
     function buildListName(name, description) {
-        var span = $(document.createElement('span')).addClass('name').append(name);
+        var div = $(document.createElement('div')).addClass('name').append(name);
 	if (description) {
-	    span.attr('title', description);
+	    div.attr('title', description);
 	}
-	return span;
+	return div;
     }
 
     // Build unordered list from object.
@@ -157,7 +157,7 @@
 
                     // Recurse over child data.
                     item.append(buildListName(prop, description))
-                        .append($(document.createElement('span'))
+                        .append($(document.createElement('div'))
                              .addClass('value')
 				.append(buildElement(data[prop], schema.properties[prop])));
                 }

@@ -34,11 +34,5 @@ ul
 
 .name
 {
-    padding-right:1em;
-    display:inline-block;
-}
-
-.value
-{
-    display:inline-block;
+    padding-right:0.5em;
 }

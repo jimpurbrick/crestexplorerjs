@@ -151,7 +151,7 @@
                     if(data[prop].name) {
                         item.append(buildListName(prop, description));
                     }
-                    item.append(buildLink(data[prop], description));
+                    item.append(buildLink(data[prop], prop, description));
 
                 } else {
 

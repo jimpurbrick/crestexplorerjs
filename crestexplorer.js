@@ -142,8 +142,6 @@
 
             // Exclude "self" links and names if used in self links.
             if (data.hasOwnProperty(prop) &&
-		// prop !== "href" &&
-		// (prop !== "name" || data.href === undefined) &&
 		(!prop.match(/_str$/))) { // TODO: Remove redundant *_str elements from representations.
                 item = buildListItem();
 		description = schema.properties[prop].description;
@@ -164,23 +162,14 @@
                              .addClass('value')
 				.append(buildElement(data[prop], schema.properties[prop])));
                 }
+		$(list).prepend(item);
             }
-            $(list).prepend(item);
         }
-
-        // Add "self" link to top of list.
-        if(data.href) {
-            $(list).prepend(buildListItem().append(buildLink(data, undefined)));
-        }
-
         return $(list);
     }
 
     // Determine data type and build appropriate element.
     function buildElement(data, schema) {
-	if(isLink(data)) {
-	    return buildLink(data);
-	}
         if(isArray(data)) {
             return buildListFromArray(data, schema);
         }

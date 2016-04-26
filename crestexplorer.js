@@ -97,6 +97,9 @@
     // Build ordered list from array.
     function buildListFromArray(data, schema) {
         var i, list = document.createElement('ol');
+
+	// TODO: Validate data by checking that schema.type === 'array'
+
 	$(list).attr('start', '0');
         for(i = 0; i < data.length; i++) {
             if(isLink(data[i])) {
@@ -108,7 +111,7 @@
                 $(list).prepend(
                 $(document.createElement('li'))
 		.addClass('arrayItem')
-		.append(buildElement(data[i], schema)));
+		.append(buildElement(data[i], schema.items)));
             }
         }
         return $(list);

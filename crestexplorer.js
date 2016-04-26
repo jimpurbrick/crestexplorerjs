@@ -119,18 +119,23 @@
         return $(document.createElement('li')).addClass('dictionaryItem');
     }
 
+    // Build table row.
+    function buildTableRow() {
+        return $(document.createElement('tr')).addClass('dictionaryItem');
+    }
+
     // Build span containing name with name class.
     function buildListName(name, description) {
-        var div = $(document.createElement('div')).addClass('name').append(name);
+        var cell = $(document.createElement('td')).addClass('name').append(name);
 	if (description) {
-	    div.attr('title', description);
+	    cell.attr('title', description);
 	}
-	return div;
+	return cell;
     }
 
     // Build unordered list from object.
     function buildListFromObject(data, schema) {
-        var prop, item, description, list = document.createElement('ul');
+        var prop, item, description, list = document.createElement('table');
 
 	// TODO: Validate data by checking that schema.type === 'object'
 
@@ -142,7 +147,7 @@
 		prop !== "href" &&
 		(prop !== "name" || data.href === undefined) &&
 		(!prop.match(/_str$/))) { // TODO: Remove redundant *_str elements from representations.
-                item = buildListItem();
+                item = buildTableRow();
 		description = schema.properties[prop].description;
 
                 if (isLink(data[prop])) {
@@ -157,7 +162,7 @@
 
                     // Recurse over child data.
                     item.append(buildListName(prop, description))
-                        .append($(document.createElement('div'))
+                        .append($(document.createElement('td'))
                              .addClass('value')
 				.append(buildElement(data[prop], schema.properties[prop])));
                 }

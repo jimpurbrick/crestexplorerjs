@@ -92,20 +92,20 @@
     }
 
     // Build ordered list from array.
-    function buildListFromArray(data) {
+    function buildListFromArray(data, schema) {
         var i, list = document.createElement('ol');
 	$(list).attr('start', '0');
         for(i = 0; i < data.length; i++) {
             if(isLink(data[i])) {
                 $(list).prepend(
                 $(document.createElement('li'))
-                    .addClass('arrayItem')
-                    .append(buildLink(data[i])));
+		.addClass('arrayItem')
+		.append(buildLink(data[i])));
             } else {
                 $(list).prepend(
                 $(document.createElement('li'))
-                    .addClass('arrayItem')
-                    .append(buildElement(data[i])));
+		.addClass('arrayItem')
+		.append(buildElement(data[i], schema)));
             }
         }
         return $(list);
@@ -117,13 +117,19 @@
     }
 
     // Build span containing name with name class.
-    function buildListName(name) {
-        return $(document.createElement('span')).addClass('name').append(name);
+    function buildListName(name, description) {
+        span = $(document.createElement('span')).addClass('name').append(name);
+	if (description) {
+	    span.attr('title', description);
+	}
+	return span;
     }
 
     // Build unordered list from object.
-    function buildListFromObject(data) {
+    function buildListFromObject(data, schema) {
         var prop, item, list = document.createElement('ul');
+
+	// TODO: Validate data by checking that schema.type === 'object'
 
         // Loop over object properties.
         for (prop in data) {
@@ -146,10 +152,10 @@
                 } else {
 
                     // Recurse over child data.
-                    item.append(buildListName(prop))
+                    item.append(buildListName(prop, schema.properties[prop].description))
                         .append($(document.createElement('span'))
                              .addClass('value')
-                             .append(buildElement(data[prop])));
+				.append(buildElement(data[prop], schema.properties[prop])));
                 }
             }
             $(list).prepend(item);
@@ -164,14 +170,14 @@
     }
 
     // Determine data type and build appropriate element.
-    function buildElement(data) {
+    function buildElement(data, schema) {
         if(isArray(data)) {
-            return buildListFromArray(data);
+            return buildListFromArray(data, schema);
         }
         if(isObject(data)) {
-            return buildListFromObject(data);
+            return buildListFromObject(data, schema);
         }
-        return buildElementFromPrimitive(data);
+        return buildElementFromPrimitive(data, schema);
     }
 
     // Show error message in main data pane.
@@ -191,14 +197,15 @@
 		"dataType": "text"
 	}).success(function(optionsData, optionsStatus, optionsXhr) {
 		$.getJSON(uri, function(data, status, xhr) {
-			var contentType, representationName, schema, dataUri, fileName;
-			$("#data").children().replaceWith(buildElement(data));
+			var contentType, representationName, schema, dataUri, fileName, representationSchema;			
 			contentType = xhr.getResponseHeader("Content-Type");
 			representationName = contentType.replace("; charset=utf-8", ""); // HACK(jimp): proper parsing.
 			$("#representationName").text(representationName);
 			schema = crestschema.jsonSchemaFromCrestOptions(optionsData);
+			representationSchema = schema.GET[representationName];
+			$("#data").children().replaceWith(buildElement(data, representationSchema));
 			dataUri = "data:application/json;charset=utf-8," +
-			    encodeURIComponent(JSON.stringify(schema.GET[representationName], null, 4));
+			    encodeURIComponent(JSON.stringify(representationSchema, null, 4));
 			fileName = representationName.
 			    replace('application/vnd.ccp.eve.','').
 			    replace('+', '.');

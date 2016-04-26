@@ -118,7 +118,7 @@
 
     // Build span containing name with name class.
     function buildListName(name, description) {
-        span = $(document.createElement('span')).addClass('name').append(name);
+        var span = $(document.createElement('span')).addClass('name').append(name);
 	if (description) {
 	    span.attr('title', description);
 	}

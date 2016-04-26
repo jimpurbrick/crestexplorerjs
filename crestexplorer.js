@@ -76,7 +76,7 @@
     }
 
     // Build link from data.
-    function buildLink(data, name) {
+    function buildLink(data, name, description) {
         var link = $(document.createElement('a'))
             .attr('href', data.href)
             .addClass('name')
@@ -88,6 +88,9 @@
         } else {
             $(link).append(link[0].pathname);
         }
+	if(description) {
+	    $(link).attr('title', description);
+	}
         return $(link);
     }
 
@@ -127,7 +130,7 @@
 
     // Build unordered list from object.
     function buildListFromObject(data, schema) {
-        var prop, item, list = document.createElement('ul');
+        var prop, item, description, list = document.createElement('ul');
 
 	// TODO: Validate data by checking that schema.type === 'object'
 
@@ -140,19 +143,20 @@
 		(prop !== "name" || data.href === undefined) &&
 		(!prop.match(/_str$/))) { // TODO: Remove redundant *_str elements from representations.
                 item = buildListItem();
+		description = schema.properties[prop].description;
 
                 if (isLink(data[prop])) {
 
                     // Link has name, so use property name as label, otherwise use property name as link text.
                     if(data[prop].name) {
-                        item.append(buildListName(prop));
+                        item.append(buildListName(prop, description));
                     }
-                    item.append(buildLink(data[prop], prop));
+                    item.append(buildLink(data[prop], description));
 
                 } else {
 
                     // Recurse over child data.
-                    item.append(buildListName(prop, schema.properties[prop].description))
+                    item.append(buildListName(prop, description))
                         .append($(document.createElement('span'))
                              .addClass('value')
 				.append(buildElement(data[prop], schema.properties[prop])));

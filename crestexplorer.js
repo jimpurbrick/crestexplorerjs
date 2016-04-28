@@ -103,12 +103,12 @@
 	$(list).attr('start', '0');
         for(i = 0; i < data.length; i++) {
             if(isLink(data[i])) {
-                $(list).prepend(
+                $(list).append(
                 $(document.createElement('li'))
 		.addClass('arrayItem')
 		.append(buildLink(data[i])));
             } else {
-                $(list).prepend(
+                $(list).append(
                 $(document.createElement('li'))
 		.addClass('arrayItem')
 		.append(buildElement(data[i], schema.items)));
@@ -179,7 +179,7 @@
                              .addClass('value')
 				.append(buildElement(data[prop], schema.properties[prop])));
                 }
-		$(list).prepend(item);
+		$(list).append(item);
             }
         }
         return $(list);

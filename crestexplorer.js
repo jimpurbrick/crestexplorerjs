@@ -40,7 +40,7 @@
 
     // True if value is an object.
     function isObject(value) {
-        return value && typeof(value) === 'object';
+        return value && $.type(value) === 'object';
     }
 
     // True if value is an array.
@@ -48,7 +48,7 @@
         return value && Object.prototype.toString.apply(value) === '[object Array]';
     }
 
-    // True if value is an object containing only href and primitive properties.
+    // True if value is an object containing only href and optional name string properties.
     function isLink(value) {
         var prop;
         if (! isObject(value)) {
@@ -59,12 +59,12 @@
         }
         for (prop in value) {
             if (value.hasOwnProperty(prop)) {
-                if (isArray(value[prop])) {
-                    return false;
-                }
-                if (isObject(value[prop])) {
-                    return false;
-                }
+		if ((prop !== 'href' &&
+		     prop !== 'name') ||
+		    (! value[prop]) ||
+		    ($.type(value[prop]) !== 'string')) {
+		    return false;
+		}
             }
         }
         return true;
@@ -83,7 +83,7 @@
             .addClass('link');
         if(data.name !== undefined) {
             $(link).append(data.name);
-        } else if(name !== undefined && name !== "href") {
+        } else if(name !== undefined && name !== 'href') {
             $(link).append(name);
         } else {
             $(link).append(link[0].pathname);
@@ -137,6 +137,12 @@
 
 	// TODO: Validate data by checking that schema.type === 'object'
 
+	// There are several patterns for representing hyperlinks in CREST currently in use:
+	// 1) {name: {href: “uri”} }
+	// 2) {href: {href: “uri”, name: “value”}}
+	// 3) {href: “uri”, name:”value”, name2, “value2”}
+	// 4) {href: “uri”, name:”value”, name2: {href:”uri2”} }
+
         // Loop over object properties.
         for (prop in data) {
 
@@ -148,15 +154,26 @@
 
                 if (isLink(data[prop])) {
 
-                    // Link has name, so use property name as label, otherwise use property name as link text.
-                    if(data[prop].name) {
-                        item.append(buildListName(prop, description));
-                    }
+		    // Cases 1,2 and 4 have link representations which span 2 levels in the tree.
+		    // Handle these cases by building link from child object and adding to parent list.
+		    // Name property in child takes precedence over parent name to make cases
+		    // 1 and 2 render consistently and avoid 'href' labels.
                     item.append(buildLink(data[prop], prop, description));
 
-                } else {
+                } else if (prop === 'href') {
 
-                    // Recurse over child data.
+		    // Cases 3 and 4 have link representations built from sibling keys..
+		    // Handle these cases by building a single link item from multiple keys.
+		    item.append(buildLink(data, data.name, description));
+
+		} else if (prop === 'name' && data.href) {
+
+		    // Ignore name keys which will be combined with href keys to build links.
+		    continue;
+
+		} else {
+
+                    // Recurse in to child data.
                     item.append(buildListName(prop, description))
                         .append($(document.createElement('span'))
                              .addClass('value')
@@ -196,7 +213,7 @@
 		"dataType": "text"
 	}).success(function(optionsData, optionsStatus, optionsXhr) {
 		$.getJSON(uri, function(data, status, xhr) {
-			var contentType, representationName, schema, dataUri, fileName, representationSchema;			
+			var contentType, representationName, schema, dataUri, fileName, representationSchema;
 			contentType = xhr.getResponseHeader("Content-Type");
 			representationName = contentType.replace("; charset=utf-8", ""); // HACK(jimp): proper parsing.
 			$("#representationName").text(representationName);

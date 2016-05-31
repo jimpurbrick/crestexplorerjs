@@ -35,7 +35,7 @@
 
   function buildRepresentationLink(mediaType) {
     return $(document.createElement('a')).
-    attr("href", window.location.hash).
+    attr("href", window.location.hash.substring(1)).
     text(representationFromMediaType(mediaType)).
     click(function(evt) {
       evt.preventDefault();

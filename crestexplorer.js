@@ -30,8 +30,7 @@
   var scopes = "publicData characterLocationRead characterFittingsRead characterContactsRead";
 
   function addAcceptQueryString(url, accept) {
-    url.search = '?Accept=' + accept;
-    return url.href;
+    return redirectUri + '?Accept=' + accept + url.hash;
   }
 
   function buildRepresentationLink(representation) {

@@ -262,7 +262,7 @@
               $("#representations").append(listElement);
             }
             $("#data").children().replaceWith(
-              buildElement(data, schema.GET[representationName]));
+              buildElement(data, schema.GET[mediaType]));
               bindLinks();
               $("#error").hide();
               $("#content").show();

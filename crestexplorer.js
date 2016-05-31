@@ -39,6 +39,7 @@
     text(representationFromMediaType(mediaType)).
     click(function(evt) {
       evt.preventDefault();
+      window.location.search = "Accept=" + mediaType;
       render($(this).attr('href'), mediaType);
       return false;
     });
@@ -251,14 +252,14 @@
             mediaType = contentType.replace("; charset=utf-8", ""); // HACK(jimp): proper parsing.
             schema = crestschema.jsonSchemaFromCrestOptions(optionsData);
             $("#representations").empty();
-            for(var representation in schema.GET) {
+            for(var schemaName in schema.GET) {
               listElement = $(document.createElement('li'));
-              if(mediaType === representation) {
-                listElement.text(representation);
+              if(mediaType === schemaName) {
+                listElement.text(representationFromMediaType(mediaType));
               } else {
-                listElement.append(buildRepresentationLink(representation));
+                listElement.append(buildRepresentationLink(schemaName));
               }
-              listElement.append(buildSchemaLink(representation, schema));
+              listElement.append(buildSchemaLink(schemaName, schema));
               $("#representations").append(listElement);
             }
             $("#data").children().replaceWith(

@@ -33,15 +33,19 @@
     return mediaType.replace('application/vnd.ccp.eve.','').replace('+json', '');
   }
 
-  function buildRepresentationLink(mediaType) {
-    return $(document.createElement('a')).
-    attr("href", window.location.hash.substring(1).split('#')[0]).
-    text(representationFromMediaType(mediaType)).
+  function buildRepresentationLink(schemaType, mediaType) {
+    var result = $(document.createElement('a')).
+    attr("class", "name").
+    text(representationFromMediaType(schemaType)).
     click(function(evt) {
       evt.preventDefault();
-      window.location.hash = $(this).attr('href') + '#' + mediaType;
+      window.location.hash = $(this).attr('href') + '#' + schemaType;
       return false;
     });
+    if (schemaType != mediaType) {
+      result.attr("href", window.location.hash.substring(1).split('#')[0]);
+    }
+    return result;
   }
 
   function buildSchemaLink(mediaType, schema) {
@@ -253,11 +257,7 @@
             $("#representations").empty();
             for(var schemaName in schema.GET) {
               listElement = $(document.createElement('li'));
-              if(mediaType === schemaName) {
-                listElement.text(representationFromMediaType(mediaType));
-              } else {
-                listElement.append(buildRepresentationLink(schemaName));
-              }
+              listElement.append(buildRepresentationLink(schemaName, mediaType));
               listElement.append(buildSchemaLink(schemaName, schema));
               $("#representations").append(listElement);
             }

@@ -42,7 +42,7 @@
   }
 
   function buildSchemaLink(representationName, schema) {
-    var dataUri, fileName;
+    var dataUri, fileName, representationSchema;
     representationSchema = schema.GET[representationName];
     dataUri = "data:application/json;charset=utf-8," +
     encodeURIComponent(JSON.stringify(representationSchema, null, 4));

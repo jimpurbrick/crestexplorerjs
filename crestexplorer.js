@@ -39,8 +39,8 @@
     text(representationFromMediaType(mediaType)).
     click(function(evt) {
       evt.preventDefault();
-      window.location.search = "Accept=" + mediaType;
-      render($(this).attr('href'), mediaType);
+      window.location.hash = $(this.attr('href'));
+      // render($(this).attr('href'), mediaType);
       return false;
     });
   }

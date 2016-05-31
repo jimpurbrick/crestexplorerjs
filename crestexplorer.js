@@ -35,7 +35,13 @@
 
   function buildRepresentationLink(mediaType) {
     return $(document.createElement('a')).
-    text(representationFromMediaType(mediaType));
+    attr("href", window.location.hash).
+    text(representationFromMediaType(mediaType)).
+    click(function(evt) {
+      evt.preventDefault();
+      render($(this).attr('href'), mediaType);
+      return false;
+    });
   }
 
   function buildSchemaLink(mediaType, schema) {
@@ -54,7 +60,6 @@
   function bindLinks() {
     $(".link").click(function(evt) {
       evt.preventDefault();
-      window.location.search = '';
       window.location.hash = $(this).attr('href');
       return false;
     });
@@ -225,27 +230,34 @@
       }
 
       // Request uri and render as HTML.
-      function render(uri) {
+      function render(uri, mediaType) {
         if (uri.indexOf("http") !== 0) {
           displayError("Addresses must be absolute");
           return;
         }
         $.ajax(uri, {
-          "method": "OPTIONS",
-          "dataType": "text"
+          method: "OPTIONS",
+          dataType: "text"
         }).success(function(optionsData, optionsStatus, optionsXhr) {
-          $.getJSON(uri, function(data, status, xhr) {
-            var contentType, representationName, schema, listElement;
+          $.ajax(uri, {
+            beforeSend: function(xhr) {
+              if (mediaType) {
+                xhr.setRequestHeader("Accept", mediaType + ", charset=utf-8");
+              }
+            }
+          }).success(function(data, status, xhr) {
+            var contentType, mediaType, schema, listElement;
             contentType = xhr.getResponseHeader("Content-Type");
-            representationName = contentType.replace("; charset=utf-8", ""); // HACK(jimp): proper parsing.
-            $("#representationName").text(representationName);
+            mediaType = contentType.replace("; charset=utf-8", ""); // HACK(jimp): proper parsing.
             schema = crestschema.jsonSchemaFromCrestOptions(optionsData);
+            $("#representations").empty();
             for(var representation in schema.GET) {
               listElement = $(document.createElement('li'));
-              if(representationName === representation) {
+              if(mediaType === representation) {
                 listElement.text(representation);
+              } else {
+                listElement.append(buildRepresentationLink(representation));
               }
-              listElement.append(buildRepresentationLink(representation));
               listElement.append(buildSchemaLink(representation, schema));
               $("#representations").append(listElement);
             }
@@ -328,7 +340,6 @@
           }
 
           ajaxSetup(token);
-          render(window.location.hash.substring(1));
         });
 
         // Request new URI on hash change.

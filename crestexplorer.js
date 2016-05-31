@@ -39,8 +39,7 @@
     text(representationFromMediaType(mediaType)).
     click(function(evt) {
       evt.preventDefault();
-      window.location.hash = $(this).attr('href');
-      // render($(this).attr('href'), mediaType);
+      window.location.hash = $(this).attr('href') + '#' + mediaType;
       return false;
     });
   }
@@ -345,7 +344,8 @@
 
         // Request new URI on hash change.
         window.onhashchange = function() {
-          render(window.location.hash.substring(1));
+          var fragments = window.location.hash.substring(1).split('#');
+          render(fragments[0], fragments.length > 1?fragments[1]:undefined);
         };
 
       }($, window, document)); // End crestexplorerjs

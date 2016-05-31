@@ -38,7 +38,7 @@
     var href = addAcceptQueryString(window.location, representation);
     return $(document.createElement('a')).
     attr('href', href).
-    text(representation));
+    text(representation);
   }
 
   function buildSchemaLink(representationName, schema) {

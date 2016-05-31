@@ -36,7 +36,7 @@
 
   function buildRepresentationLink(representation) {
     var href = addAcceptQueryString(window.location, representation);
-    return $.createElement('a').attr('href', href).text(representation);
+    return $(document.createElement('a').attr('href', href).text(representation));
   }
 
   function buildSchemaLink(representationName, schema) {
@@ -47,7 +47,7 @@
     fileName = representationName.
     replace('application/vnd.ccp.eve.','').
     replace('+', '.');
-    return $.createElement('a').
+    return $(document.createElement('a')).
     attr("href", dataUri).
     attr("download", fileName).
     attr("title", "Download JSON schema");
@@ -238,14 +238,13 @@
           "dataType": "text"
         }).success(function(optionsData, optionsStatus, optionsXhr) {
           $.getJSON(uri, function(data, status, xhr) {
-            var contentType, representationName, schema,
-            dataUri, fileName, representationSchema, listElement;
+            var contentType, representationName, schema, listElement;
             contentType = xhr.getResponseHeader("Content-Type");
             representationName = contentType.replace("; charset=utf-8", ""); // HACK(jimp): proper parsing.
             $("#representationName").text(representationName);
             schema = crestschema.jsonSchemaFromCrestOptions(optionsData);
             for(var representation in schema.GET) {
-              listElement = $.createElement('li');
+              listElement = $(document.createElement('li'));
               if(representationName === representation) {
                 listElement.text(representation);
               }
@@ -254,7 +253,7 @@
               $("#representations").append(listElement);
             }
             $("#data").children().replaceWith(
-              buildElement(data, representationSchema));
+              buildElement(data, schema.GET[representationName ]));
               bindLinks();
               $("#error").hide();
               $("#content").show();
@@ -341,4 +340,3 @@
         };
 
       }($, window, document)); // End crestexplorerjs
-      

@@ -39,7 +39,7 @@
     text(representationFromMediaType(mediaType)).
     click(function(evt) {
       evt.preventDefault();
-      window.location.hash = $(this.attr('href'));
+      window.location.hash = $(this).attr('href');
       // render($(this).attr('href'), mediaType);
       return false;
     });

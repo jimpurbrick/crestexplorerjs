@@ -29,36 +29,32 @@
   var hashTokenName = clientId + "hash";
   var scopes = "publicData characterLocationRead characterFittingsRead characterContactsRead";
 
-  function addAcceptQueryString(url, accept) {
-    return redirectUri + '?Accept=' + accept + url.hash;
+  function representationFromMediaType(mediaType) {
+    return mediaType.replace('application/vnd.ccp.eve.','').replace('+json', '');
   }
 
-  function buildRepresentationLink(representation) {
-    var href = addAcceptQueryString(window.location, representation);
+  function buildRepresentationLink(mediaType) {
     return $(document.createElement('a')).
-    attr('href', href).
-    text(representation);
+    text(representationFromMediaType(mediaType));
   }
 
-  function buildSchemaLink(representationName, schema) {
-    var dataUri, fileName, representationSchema;
-    representationSchema = schema.GET[representationName];
+  function buildSchemaLink(mediaType, schema) {
+    var dataUri, representationSchema;
+    representationSchema = schema.GET[mediaType];
     dataUri = "data:application/json;charset=utf-8," +
     encodeURIComponent(JSON.stringify(representationSchema, null, 4));
-    fileName = representationName.
-    replace('application/vnd.ccp.eve.','').
-    replace('+', '.');
     return $(document.createElement('a')).
     attr("href", dataUri).
-    attr("download", fileName).
-    attr("title", "Download JSON schema");
+    attr("download", representationFromMediaType(mediaType) + '.json').
+    attr("title", "Download JSON schema").
+    text("schema");
   }
 
   // Bind click handlers to link elements.
   function bindLinks() {
     $(".link").click(function(evt) {
       evt.preventDefault();
-      // TODO: set query string to empty.
+      window.location.search = '';
       window.location.hash = $(this).attr('href');
       return false;
     });
@@ -254,7 +250,7 @@
               $("#representations").append(listElement);
             }
             $("#data").children().replaceWith(
-              buildElement(data, schema.GET[representationName ]));
+              buildElement(data, schema.GET[representationName]));
               bindLinks();
               $("#error").hide();
               $("#content").show();

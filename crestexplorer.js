@@ -55,6 +55,7 @@
     encodeURIComponent(JSON.stringify(representationSchema, null, 4));
     return $(document.createElement('a')).
     attr("href", dataUri).
+    attr("class", "link").
     attr("download", representationFromMediaType(mediaType) + '.json').
     attr("title", "Download JSON schema").
     text("schema");

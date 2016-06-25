@@ -45,8 +45,8 @@ ul
 }
 
 ol
-.name
-.link
+span.name
+a.link
 {
     color: #33DFFF;
 }

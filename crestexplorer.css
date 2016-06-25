@@ -44,7 +44,12 @@ ul
     padding-right:0.5em;
 }
 
-.value span
+.link
 {
-    color: white;
+    color: #33DFFF;
+}
+
+span.value
+{
+    color:white;
 }

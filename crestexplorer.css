@@ -3,7 +3,7 @@ body
     font: 1em "Trebuchet MS",sans-serif;
     background: black url(https://login.eveonline.com/Images/site-bg.jpg) top right no-repeat;
     background-attachment: fixed;
-    color: white;
+    color: #33DFFF;
     font-size: 12px;
 }
 
@@ -33,13 +33,12 @@ ul
     padding:0.5em;
 }
 
-.link,
-.name
-{
-    color:#33DFFF !important;
-}
-
 .name 
 {
     padding-right:0.5em;
+}
+
+.value span
+{
+    color: white;
 }

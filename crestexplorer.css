@@ -17,6 +17,11 @@ ul
     list-style-type: none;
 }
 
+.a
+{
+    color:#33DFFF;
+}
+
 #wrapper
 {
     margin:2em;

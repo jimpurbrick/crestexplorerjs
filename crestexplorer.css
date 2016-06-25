@@ -17,11 +17,6 @@ ul
     list-style-type: none;
 }
 
-.a
-{
-    color:#33DFFF;
-}
-
 #wrapper
 {
     margin:2em;
@@ -38,8 +33,13 @@ ul
     padding:0.5em;
 }
 
+.link,
 .name
 {
-    padding-right:0.5em;
     color:#33DFFF;
+}
+
+.name 
+{
+    padding-right:0.5em;
 }

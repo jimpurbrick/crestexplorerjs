@@ -27,6 +27,12 @@ ul
     display:inline-block;
 }
 
+.content
+{
+    border: 1px solid #666666;
+    background: black;
+}
+
 .bottom-menu
 {
     float:right;

@@ -4,6 +4,7 @@ body
     background: black url(https://login.eveonline.com/Images/site-bg.jpg) top right no-repeat;
     background-attachment: fixed;
     color: white;
+    font-size: 12px;
 }
 
 td
@@ -35,4 +36,5 @@ ul
 .name
 {
     padding-right:0.5em;
+    color:#33DFFF;
 }
